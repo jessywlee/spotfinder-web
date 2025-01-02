@@ -1,6 +1,8 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
+import DeleteAccount from "./pages/DeleteAccount";
+import NoAccount from "./pages/NoAccount";
 
 function App() {
   return (
@@ -17,7 +19,8 @@ function App() {
       </div>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/delete-account" element={<>회원탈퇴</>} />
+        <Route path="/delete-account" element={<DeleteAccount />} />
+        <Route path="/no-account" element={<NoAccount />} />
       </Routes>
     </Router>
   );
