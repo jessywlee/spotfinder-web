@@ -3,10 +3,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import DeleteAccount from "./pages/DeleteAccount";
 import NoAccount from "./pages/NoAccount";
+import RedirectKakao from "./components/redirects/RedirectKakao";
 
 function App() {
   return (
-    <Router>
+    <>
       <div className="text-center">
         <img
           src="src/assets/spotfinder_logo.png"
@@ -17,12 +18,15 @@ function App() {
           SPOT FINDER 회원 탈퇴
         </div>
       </div>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/delete-account" element={<DeleteAccount />} />
-        <Route path="/no-account" element={<NoAccount />} />
-      </Routes>
-    </Router>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/delete-account" element={<DeleteAccount />} />
+          <Route path="/no-account" element={<NoAccount />} />
+          <Route path="/auth/code/kakao" element={<RedirectKakao />} />
+        </Routes>
+      </Router>
+    </>
   );
 }
 
