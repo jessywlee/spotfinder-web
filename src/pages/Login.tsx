@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import KakaoLogin from "../components/KakaoLogin";
+import NaverLogin from "../components/NaverLogin";
 
 function Login() {
   useEffect(() => {
@@ -17,14 +18,8 @@ function Login() {
   return (
     <div>
       <div className="flex flex-col gap-2 mt-8">
-        <button className="py-2 px-4 rounded-md border border-gray-300 flex gap-2 items-center">
-          <img
-            src="src/assets/naver_logo.png"
-            alt="naver_logo"
-            className="w-8 h-8"
-          />
-          Naver 계정으로 로그인
-        </button>
+        <NaverLogin />
+
         <KakaoLogin />
         <div
           id="appleid-signin"
