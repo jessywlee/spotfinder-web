@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 function AppleLogin() {
   const navigate = useNavigate();
@@ -23,17 +24,21 @@ function AppleLogin() {
     } catch (error) {
       console.log(error);
       navigate("/");
+      toast.error("로그인에 실패하였습니다. 다시 시도해주세요");
     }
   };
   return (
-    <div
-      id="appleid-signin"
-      className="w-[260px] h-[64px] cursor-pointer text-lg"
-      data-color="black"
-      data-border="true"
-      data-type="sign-in"
-      onClick={(e) => handleLoginApple(e)}
-    ></div>
+    <>
+      <div
+        id="appleid-signin"
+        className="w-[260px] h-[64px] cursor-pointer text-lg"
+        data-color="black"
+        data-border="true"
+        data-type="sign-in"
+        onClick={(e) => handleLoginApple(e)}
+      ></div>
+      <ToastContainer />
+    </>
   );
 }
 
