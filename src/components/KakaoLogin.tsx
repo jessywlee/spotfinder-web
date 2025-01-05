@@ -1,5 +1,5 @@
 const K_CLIENT_ID = import.meta.env.VITE_K_CLIENT_ID;
-const K_REDIRECT_URI = `http://localhost:8080/auth/code/kakao`;
+const K_REDIRECT_URI = import.meta.env.VITE_K_REDIRECT_URI;
 const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${K_CLIENT_ID}&redirect_uri=${K_REDIRECT_URI}&response_type=code`;
 
 function KakaoLogin() {

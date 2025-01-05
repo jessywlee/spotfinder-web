@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export function RedirectNaver() {
+export function RedirectApple() {
   // const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get("code");
 
@@ -21,9 +21,6 @@ export function RedirectNaver() {
     //   .catch((error) => {
     //     console.error("오류 발생", error); //
     //   });
-
-    // API 요청 성공시 :콜백URL/redirect?code={code값}&state={state값}
-    // API 요청 실패시 :콜백URL/redirect?state={state값}&error={에러코드값}&error_description={에러메시지}
   }, [code]);
 
   return (
@@ -33,4 +30,4 @@ export function RedirectNaver() {
   );
 }
 
-export default RedirectNaver;
+export default RedirectApple;
