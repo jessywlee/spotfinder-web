@@ -1,8 +1,10 @@
 import Request from "./AxiosInstance.ts";
 
 interface CommonResponse {
-  code: string;
-  message: string;
+  data: {
+    code: string;
+    message: string;
+  }
 }
 
 interface LoginParams {

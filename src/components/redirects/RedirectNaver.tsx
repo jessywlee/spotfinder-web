@@ -20,8 +20,7 @@ export function RedirectNaver() {
         authCode: code,
       })
         .then((response) => {
-          console.log(response);
-          if (response.code === "REQ000") {
+          if (response.data.code === "REQ000") {
             navigate("/delete-account");
           } else {
             navigate("/");
@@ -33,6 +32,11 @@ export function RedirectNaver() {
         .catch((err) => {
           console.log(err);
         });
+    } else {
+      navigate("/");
+      toast.warn(
+        "로그인 할 수 없습니다. 다시 시도하거나 관리자에게 문의해 보세요."
+      );
     }
   }, [code, fetchLogin, navigate]);
 
