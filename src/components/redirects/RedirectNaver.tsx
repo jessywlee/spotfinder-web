@@ -1,33 +1,40 @@
 import { useEffect, useState } from "react";
 import { FadeLoader } from "react-spinners";
+import useLogin from "../../api/hooks/useLogin";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 export function RedirectNaver() {
   // const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const code = new URL(window.location.href).searchParams.get("code");
+  const { mutateAsync: fetchLogin } = useLogin();
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log(code);
     setLoading(true);
-    // fetch(`보내줄 주소?code=${code}`, {
-    //   method: "POST", //
-    //   headers: {
-    //     "Content-Type": "application/x-www-form-urlencoded",
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //     console.log(data.result.user_id);
-    //     console.log(data.result.jwt);
-    //   })
-    //   .catch((error) => {
-    //     console.error("오류 발생", error); //
-    //   });
-
-    // API 요청 성공시 :콜백URL/redirect?code={code값}&state={state값}
-    // API 요청 실패시 :콜백URL/redirect?state={state값}&error={에러코드값}&error_description={에러메시지}
-  }, [code]);
+    if (code) {
+      fetchLogin({
+        socialType: "N",
+        authCode: code,
+      })
+        .then((response) => {
+          console.log(response);
+          if (response.code === "REQ000") {
+            navigate("/delete-account");
+          } else {
+            navigate("/");
+            toast.warn(
+              "로그인 할 수 없습니다. 다시 시도하거나 관리자에게 문의해 보세요."
+            );
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [code, fetchLogin, navigate]);
 
   return (
     <div className="flex justify-center">
@@ -38,6 +45,7 @@ export function RedirectNaver() {
         data-testid="loader"
         speedMultiplier={0.5}
       />
+      <ToastContainer />
     </div>
   );
 }
