@@ -34,15 +34,8 @@ function AppleLogin() {
             const result = verifyLoginResponse(response, navigate, 'A')
             if (result === 'AUTH004') {
               toast.error("소셜 서비스의 회원 정보 조회를 실패했습니다.");
-              // setTimeout(() => {
-              //   navigate("/");
-              // }, 2000)
             } else if (result === 'AUTH003') {
-
               toast.error("인증에 실패했습니다. 다시 시도하거나 관리자에게 문의해 주세요.");
-              // setTimeout(() => {
-              //   navigate("/");
-              // }, 2000)
             }
           })
           .catch((err) => {
@@ -55,7 +48,7 @@ function AppleLogin() {
         );
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
       navigate("/");
       toast.error("로그인에 실패하였습니다. 다시 시도해주세요");
     }
