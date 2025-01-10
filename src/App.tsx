@@ -10,16 +10,6 @@ import RedirectApple from "./components/redirects/RedirectApple";
 function App() {
   return (
     <>
-      <div className="text-center">
-        <img
-          src="src/assets/spotfinder_logo.png"
-          alt="spotfinder_logo"
-          className="w-10 h-10 m-auto"
-        />
-        <div className="text-[#4D63FC] font-semibold text-lg">
-          SPOT FINDER 회원 탈퇴
-        </div>
-      </div>
       <Router>
         <Routes>
           <Route path="/" element={<Login />} />

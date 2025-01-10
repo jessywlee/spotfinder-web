@@ -1,10 +1,14 @@
-const K_CLIENT_ID = import.meta.env.VITE_K_CLIENT_ID;
-const K_REDIRECT_URI = import.meta.env.VITE_K_REDIRECT_URI;
-const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${K_CLIENT_ID}&redirect_uri=${K_REDIRECT_URI}&response_type=code`;
+import {getAuthUrl} from "../utils/commonUtil.ts";
+import {toast} from "react-toastify";
 
 function KakaoLogin() {
   const handleKakaoLogin = () => {
-    window.location.href = kakaoURL;
+    const kakaoUrl = getAuthUrl('K');
+    if (kakaoUrl) {
+      window.location.href = kakaoUrl;
+    } else {
+      toast.error('로그인 할 수 없습니다.')
+    }
   };
 
   return (

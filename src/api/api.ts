@@ -1,6 +1,6 @@
 import Request from "./AxiosInstance.ts";
 
-interface CommonResponse {
+export interface CommonResponse {
   data: {
     code: string;
     message: string;

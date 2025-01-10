@@ -1,11 +1,14 @@
-const N_CLIENT_ID = import.meta.env.VITE_N_CLIENT_ID;
-const N_REDIRECT_URI = import.meta.env.VITE_N_REDIRECT_URI;
-const STATE = "false";
-const naverUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${N_CLIENT_ID}&state=${STATE}&redirect_uri=${N_REDIRECT_URI}`;
+import {getAuthUrl} from "../utils/commonUtil.ts";
+import {toast} from "react-toastify";
 
 function NaverLogin() {
   const handleNaverLogin = () => {
-    window.location.href = naverUrl;
+    const naverUrl = getAuthUrl('N');
+    if (naverUrl) {
+      window.location.href = naverUrl;
+    } else {
+      toast.error('로그인 할 수 없습니다.')
+    }
   };
 
   return (

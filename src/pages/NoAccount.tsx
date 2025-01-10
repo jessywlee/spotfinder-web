@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
+import Layout from "../components/Layout.tsx";
 
 function NoAccount() {
   return (
-    <>
+    <Layout>
       <div className="p-4 text-md">
         회원가입 되지 않은 회원입니다.
         <br />
@@ -13,7 +14,7 @@ function NoAccount() {
           <Link to="/">다시 로그인하러 가기</Link>
         </button>
       </div>
-    </>
+    </Layout>
   );
 }
 
