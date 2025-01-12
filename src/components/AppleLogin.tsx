@@ -1,11 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import useLogin from "../api/hooks/useLogin.ts";
-import {verifyLoginResponse} from "../utils/commonUtil.ts";
+import { verifyLoginResponse } from "../utils/commonUtil.ts";
+import { FadeLoader } from "react-spinners";
 
 function AppleLogin() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const { mutateAsync: fetchLogin } = useLogin();
   useEffect(() => {
     const CLEINT_ID = import.meta.env.VITE_A_CLIENT_ID;
@@ -23,23 +25,32 @@ function AppleLogin() {
     e.preventDefault();
     try {
       const res = await window.AppleID.auth.signIn();
+
+      console.log(res);
       const code = res.authorization.code;
 
       if (code) {
+        setLoading(true);
         fetchLogin({
           socialType: "A",
           authCode: code,
         })
           .then((response) => {
-            const result = verifyLoginResponse(response, navigate, 'A')
-            if (result === 'AUTH004') {
+            const result = verifyLoginResponse(response, navigate, "A");
+            if (result === "AUTH004") {
               toast.error("소셜 서비스의 회원 정보 조회를 실패했습니다.");
-            } else if (result === 'AUTH003') {
-              toast.error("인증에 실패했습니다. 다시 시도하거나 관리자에게 문의해 주세요.");
+            } else if (result === "AUTH003") {
+              toast.error(
+                "인증에 실패했습니다. 다시 시도하거나 관리자에게 문의해 주세요."
+              );
+            } else if (result === "MBR000") {
+              toast.error("회원 정보가 없습니다.");
             }
+            setLoading(false);
           })
           .catch((err) => {
             console.log(err);
+            setLoading(false);
           });
       } else {
         navigate("/");
@@ -48,7 +59,7 @@ function AppleLogin() {
         );
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       navigate("/");
       toast.error("로그인에 실패하였습니다. 다시 시도해주세요");
     }
@@ -63,6 +74,17 @@ function AppleLogin() {
         data-type="sign-in"
         onClick={(e) => handleLoginApple(e)}
       ></div>
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-50 z-50">
+          <FadeLoader
+            loading={loading}
+            color="#4D63FC"
+            aria-label="Loading Spinner"
+            data-testid="loader"
+            speedMultiplier={0.5}
+          />
+        </div>
+      )}
     </>
   );
 }

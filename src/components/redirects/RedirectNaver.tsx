@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { FadeLoader } from "react-spinners";
 import useLogin from "../../api/hooks/useLogin";
 import { useNavigate } from "react-router-dom";
-import {toast, ToastContainer} from "react-toastify";
-import {verifyLoginResponse} from "../../utils/commonUtil.ts";
+import { toast, ToastContainer } from "react-toastify";
+import { verifyLoginResponse } from "../../utils/commonUtil.ts";
 import useUnlink from "../../api/hooks/useUnlink.ts";
 
 export function RedirectNaver() {
@@ -17,7 +17,10 @@ export function RedirectNaver() {
 
   useEffect(() => {
     const handleAuthError = (message?: string) => {
-      toast.error(message || "인증에 실패했습니다. 다시 시도하거나 관리자에게 문의해 보세요.");
+      toast.error(
+        message ||
+          "인증에 실패했습니다. 다시 시도하거나 관리자에게 문의해 보세요."
+      );
       navigate("/");
     };
 
@@ -29,17 +32,19 @@ export function RedirectNaver() {
           authCode: code,
         });
         const result = verifyLoginResponse(response, navigate, "N");
-        if (result === 'AUTH004') {
+        if (result === "AUTH004") {
           toast.error("소셜 서비스의 회원 정보 조회를 실패했습니다.");
           setTimeout(() => {
             navigate("/");
-          }, 2000)
-        } else if (result === 'AUTH003') {
-          console.log(result)
-          toast.error("인증에 실패했습니다. 다시 시도하거나 관리자에게 문의해 주세요.");
+          }, 2000);
+        } else if (result === "AUTH003") {
+          console.log(result);
+          toast.error(
+            "인증에 실패했습니다. 다시 시도하거나 관리자에게 문의해 주세요."
+          );
           setTimeout(() => {
             navigate("/");
-          }, 2000)
+          }, 2000);
         }
       } catch (err) {
         console.error(err);
@@ -50,7 +55,6 @@ export function RedirectNaver() {
     };
 
     const handleUnlink = async (code: string) => {
-
       try {
         setLoading(true);
         const response = await fetchUnlink({ authCode: code });
@@ -58,12 +62,14 @@ export function RedirectNaver() {
           toast.success("회원 탈퇴가 완료되었습니다.");
           setTimeout(() => {
             navigate("/");
-          }, 2000)
+          }, 2000);
         } else {
-          toast.error("회원 탈퇴에 실패하였습니다. 다시 시도하거나 관리자에게 문의해 주세요.");
+          toast.error(
+            "회원 탈퇴에 실패하였습니다. 다시 시도하거나 관리자에게 문의해 주세요."
+          );
           setTimeout(() => {
             navigate("/");
-          }, 2000)
+          }, 2000);
         }
         navigate("/");
       } catch (err) {
@@ -91,12 +97,11 @@ export function RedirectNaver() {
           handleAuthError();
           break;
       }
-
     };
 
     console.log(window.location.href); // Debugging log
     processAuth();
-  }, [code, state, fetchLogin, fetchUnlink, verifyLoginResponse, navigate]);
+  }, [code, state, fetchLogin, fetchUnlink, navigate]);
 
   return (
     <div className="flex justify-center">
@@ -107,7 +112,7 @@ export function RedirectNaver() {
         data-testid="loader"
         speedMultiplier={0.5}
       />
-      <ToastContainer position="bottom-center" theme="colored"/>
+      <ToastContainer position="bottom-center" theme="colored" />
     </div>
   );
 }
