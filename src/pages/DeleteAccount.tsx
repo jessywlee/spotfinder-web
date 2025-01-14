@@ -51,7 +51,7 @@ function DeleteAccount() {
         }
         setTimeout(() => {
           navigate("/");
-        }, 2000);
+        }, 1000);
       }
     } catch (err) {
       console.error(err);

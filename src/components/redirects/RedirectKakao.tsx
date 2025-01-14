@@ -21,7 +21,9 @@ export function RedirectKakao() {
         message ||
           "인증에 실패했습니다. 다시 시도하거나 관리자에게 문의해 보세요."
       );
-      navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     };
 
     const handleLogin = async (code: string) => {
@@ -32,7 +34,6 @@ export function RedirectKakao() {
           authCode: code,
         });
         const result = verifyLoginResponse(response);
-        console.log(result);
         if (result === "REQ000") {
           setTimeout(() => {
             navigate("/delete-account?socialType=" + "K");
@@ -43,7 +44,6 @@ export function RedirectKakao() {
             navigate("/");
           }, 2000);
         } else if (result === "AUTH003") {
-          console.log(result);
           toast.error(
             "인증에 실패했습니다. 다시 시도하거나 관리자에게 문의해 주세요."
           );
@@ -70,7 +70,9 @@ export function RedirectKakao() {
             "회원 탈퇴에 실패하였습니다. 다시 시도하거나 관리자에게 문의해 주세요."
           );
         }
-        navigate("/");
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
       } catch (err) {
         console.error(err);
         handleAuthError();

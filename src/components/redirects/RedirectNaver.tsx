@@ -21,7 +21,9 @@ export function RedirectNaver() {
         message ||
           "인증에 실패했습니다. 다시 시도하거나 관리자에게 문의해 보세요."
       );
-      navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     };
 
     const handleLogin = async (code: string) => {
@@ -66,14 +68,14 @@ export function RedirectNaver() {
           toast.success("회원 탈퇴가 완료되었습니다.");
           setTimeout(() => {
             navigate("/");
-          }, 2000);
+          }, 1000);
         } else {
           toast.error(
             "회원 탈퇴에 실패하였습니다. 다시 시도하거나 관리자에게 문의해 주세요."
           );
           setTimeout(() => {
             navigate("/");
-          }, 2000);
+          }, 1000);
         }
         navigate("/");
       } catch (err) {
