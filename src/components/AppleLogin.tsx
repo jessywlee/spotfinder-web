@@ -36,8 +36,12 @@ function AppleLogin() {
           authCode: code,
         })
           .then((response) => {
-            const result = verifyLoginResponse(response, navigate, "A");
-            if (result === "AUTH004") {
+            const result = verifyLoginResponse(response);
+            if (result === "REQ000") {
+              setTimeout(() => {
+                navigate("/delete-account?socialType=" + "A");
+              }, 1000);
+            } else if (result === "AUTH004") {
               toast.error("소셜 서비스의 회원 정보 조회를 실패했습니다.");
             } else if (result === "AUTH003") {
               toast.error(

@@ -1,10 +1,10 @@
 import Layout from "../components/Layout.tsx";
-import {useNavigate, useSearchParams} from "react-router-dom";
-import {getUnlinkAuthUrl} from "../utils/commonUtil.ts";
-import React, {useState} from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { getUnlinkAuthUrl } from "../utils/commonUtil.ts";
+import React, { useState } from "react";
 import useUnlink from "../api/hooks/useUnlink.ts";
-import {toast} from "react-toastify";
-import {FadeLoader} from "react-spinners";
+import { toast } from "react-toastify";
+import { FadeLoader } from "react-spinners";
 
 function DeleteAccount() {
   const [searchParams] = useSearchParams();
@@ -16,23 +16,23 @@ function DeleteAccount() {
     e.preventDefault();
     const socialType = searchParams.get("socialType");
 
-    if (socialType === 'A') {
-        const CLEINT_ID = import.meta.env.VITE_A_CLIENT_ID;
-        const REDIRECT_URI = import.meta.env.VITE_A_REDIRECT_URI;
-        window.AppleID.auth.init({
-          clientId: CLEINT_ID,
-          scope: "name email",
-          redirectURI: REDIRECT_URI,
-          state: "unlink",
-          nonce: "[NONCE]",
-          usePopup: true,
-        });
-        void handleAuthApple();
+    if (socialType === "A") {
+      const CLEINT_ID = import.meta.env.VITE_A_CLIENT_ID;
+      const REDIRECT_URI = import.meta.env.VITE_A_REDIRECT_URI;
+      window.AppleID.auth.init({
+        clientId: CLEINT_ID,
+        scope: "name email",
+        redirectURI: REDIRECT_URI,
+        state: "unlink",
+        nonce: "[NONCE]",
+        usePopup: true,
+      });
+      void handleAuthApple();
     } else if (socialType) {
-      const url = getUnlinkAuthUrl(socialType as 'N' | 'K');
+      const url = getUnlinkAuthUrl(socialType as "N" | "K");
       window.location.href = url;
     }
-  }
+  };
 
   const handleAuthApple = async () => {
     try {
@@ -45,27 +45,33 @@ function DeleteAccount() {
         if (response.data.code === "REQ000") {
           toast.success("회원 탈퇴가 완료되었습니다.");
         } else {
-          toast.error("회원 탈퇴에 실패하였습니다. 다시 시도하거나 관리자에게 문의해 주세요.");
+          toast.error(
+            "회원 탈퇴에 실패하였습니다. 다시 시도하거나 관리자에게 문의해 주세요."
+          );
         }
         setTimeout(() => {
           navigate("/");
-        }, 2000)
+        }, 2000);
       }
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
-  }
+  };
   return (
     <Layout>
-      <FadeLoader
-        loading={loading}
-        color="#4D63FC"
-        aria-label="Loading Spinner"
-        data-testid="loader"
-        speedMultiplier={0.5}
-      />
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-50 z-50">
+          <FadeLoader
+            loading={loading}
+            color="#4D63FC"
+            aria-label="Loading Spinner"
+            data-testid="loader"
+            speedMultiplier={0.5}
+          />
+        </div>
+      )}
       <div className="mt-4 p-4 rounded-md border border-gray-300 text-gray-500 text-sm text-left">
         법령의 규정에 의하여 보존할 필요성이 있는 경우
         <ul>
@@ -83,7 +89,10 @@ function DeleteAccount() {
       </div>
       <div className="mt-4">
         회원 탈퇴를 하시겠습니까?
-        <button className="px-4 py-2 bg-black text-white text-semibold w-full rounded-md mt-4 font-semibold" onClick={e => handleDeleteAccount(e)}>
+        <button
+          className="px-4 py-2 bg-black text-white text-semibold w-full rounded-md mt-4 font-semibold"
+          onClick={(e) => handleDeleteAccount(e)}
+        >
           확인
         </button>
       </div>
