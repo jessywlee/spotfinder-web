@@ -37,29 +37,45 @@ export const getUnlinkAuthUrl = (socialType: "N" | "K") => {
 
 export const verifyLoginResponse = (
   response: CommonResponse
-  // navigate: (path: string) => void,
-  // socialType: "N" | "K" | "A"
 ) => {
   if (response.data.code === "REQ000") {
-    // console.log("navigate");
-    // navigate("/delete-account?socialType=" + socialType);
     return response.data.code;
   } else {
     return response.data.message;
   }
-  // } else if (response.data.message === "AUTH004") {
-  //   // toast.error("소셜 서비스의 회원 정보 조회를 실패했습니다.");
-  //   // navigate("/no-account");
-  //   return response.data.message
-  //
-  // } else if (response.data.message === "AUTH003") {
-  //   // toast.error("인증에 실패했습니다. 다시 시도하거나 관리자에게 문의해 주세요.");
-  //
-  //   navigate("/");
-  //   return response.data.message
-  // } else {
-  //   toast.error(
-  //     "로그인에 실패하였습니다. 다시 시도하거나 관리자에게 문의해 주세요."
-  //   );
-  // }
 };
+
+export type LoginResponseCode = "REQ000" | "AUTH004" | "AUTH003" | "MBR000" | "default";
+type SocialType = "N" | "A" | "K";
+
+interface ResultAction {
+  message: string | null;
+  navigateTo: (socialType?: SocialType) => string;
+}
+
+const resultActions: Record<LoginResponseCode, ResultAction> = {
+  REQ000: {
+    message: null,
+    navigateTo: (socialType?: SocialType) => `/delete-account?socialType=${socialType}`,
+  },
+  AUTH004: {
+    message: "소셜 서비스의 회원 정보 조회를 실패했습니다.",
+    navigateTo: () => "/",
+  },
+  AUTH003: {
+    message: "인증에 실패했습니다. 다시 시도하거나 관리자에게 문의해 주세요.",
+    navigateTo: () => "/",
+  },
+  MBR000: {
+    message: null,
+    navigateTo: () => "/no-account",
+  },
+  default: {
+    message: "로그인에 실패하였습니다. 다시 시도해 주세요.",
+    navigateTo: () => "/",
+  },
+};
+
+export const getLoginAction = (result: LoginResponseCode): ResultAction  => {
+  return resultActions[result] || resultActions.default;
+}

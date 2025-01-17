@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useLogin from "../api/hooks/useLogin.ts";
-import { verifyLoginResponse } from "../utils/commonUtil.ts";
+import {getLoginAction, LoginResponseCode, verifyLoginResponse} from "../utils/commonUtil.ts";
 import { FadeLoader } from "react-spinners";
 
 function AppleLogin() {
@@ -25,8 +25,6 @@ function AppleLogin() {
     e.preventDefault();
     try {
       const res = await window.AppleID.auth.signIn();
-
-      console.log(res);
       const code = res.authorization.code;
 
       if (code) {
@@ -37,19 +35,18 @@ function AppleLogin() {
         })
           .then((response) => {
             const result = verifyLoginResponse(response);
-            if (result === "REQ000") {
-              setTimeout(() => {
-                navigate("/delete-account?socialType=" + "A");
-              }, 1000);
-            } else if (result === "AUTH004") {
-              toast.error("소셜 서비스의 회원 정보 조회를 실패했습니다.");
-            } else if (result === "AUTH003") {
-              toast.error(
-                "인증에 실패했습니다. 다시 시도하거나 관리자에게 문의해 주세요."
-              );
-            } else if (result === "MBR000") {
-              toast.error("회원 정보가 없습니다.");
+            const action = getLoginAction(result as LoginResponseCode)
+
+            if (action.message) {
+              toast.error(action.message);
             }
+            if (action.navigateTo) {
+              setTimeout(() => {
+                const url = action.navigateTo('A');
+                navigate(url);
+              }, 1000);
+            }
+
             setLoading(false);
           })
           .catch((err) => {

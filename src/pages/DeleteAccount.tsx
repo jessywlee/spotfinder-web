@@ -1,16 +1,18 @@
 import Layout from "../components/Layout.tsx";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getUnlinkAuthUrl } from "../utils/commonUtil.ts";
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import useUnlink from "../api/hooks/useUnlink.ts";
 import { toast } from "react-toastify";
 import { FadeLoader } from "react-spinners";
+import DeleteSuccessModal from "../components/DeleteSuccessModal.tsx";
 
 function DeleteAccount() {
   const [searchParams] = useSearchParams();
   const { mutateAsync: fetchUnlink } = useUnlink();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [isAccountDeleted, setIsAccountDeleted] = useState(false);
 
   const handleDeleteAccount = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -43,15 +45,15 @@ function DeleteAccount() {
       if (code) {
         const response = await fetchUnlink({ authCode: code });
         if (response.data.code === "REQ000") {
-          toast.success("회원 탈퇴가 완료되었습니다.");
+          setIsAccountDeleted(true)
         } else {
           toast.error(
             "회원 탈퇴에 실패하였습니다. 다시 시도하거나 관리자에게 문의해 주세요."
           );
+          setTimeout(() => {
+            navigate("/");
+          }, 1000);
         }
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
       }
     } catch (err) {
       console.error(err);
@@ -59,6 +61,13 @@ function DeleteAccount() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const success = searchParams.get("success");
+    if (success === 'true') {
+      setIsAccountDeleted(true)
+    }
+  }, [searchParams])
   return (
     <Layout>
       {loading && (
@@ -96,6 +105,8 @@ function DeleteAccount() {
           확인
         </button>
       </div>
+
+      <DeleteSuccessModal isOpen={isAccountDeleted} onClose={() => {navigate('/')}} />
     </Layout>
   );
 }
