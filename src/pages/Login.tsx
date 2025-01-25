@@ -1,5 +1,5 @@
 import KakaoLogin from "../components/KakaoLogin";
-import NaverLogin from "../components/NaverLogin";
+// import NaverLogin from "../components/NaverLogin";
 import AppleLogin from "../components/AppleLogin";
 import Layout from "../components/Layout.tsx";
 
