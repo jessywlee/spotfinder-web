@@ -14,7 +14,7 @@ function KakaoLogin() {
   return (
     <div className="cursor-pointer" onClick={handleKakaoLogin}>
       <img
-        src="src/assets/kakao_login_large_narrow.png"
+        src="../../public/kakao_login_large_narrow.png"
         width="260"
         height="50"
       />

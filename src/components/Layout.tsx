@@ -11,7 +11,7 @@ function Layout({ children } : Props) {
     <>
       <div className="text-center">
         <img
-          src="src/assets/spotfinder_logo.png"
+          src="../../public/spotfinder_logo.png"
           alt="spotfinder_logo"
           className="w-10 h-10 m-auto"
         />
