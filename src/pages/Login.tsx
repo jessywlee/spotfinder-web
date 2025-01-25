@@ -9,7 +9,7 @@ function Login() {
       <Layout>
         <div>
           <div className="flex flex-col gap-2 mt-8 relative">
-            <NaverLogin />
+            {/*<NaverLogin />*/}
             <KakaoLogin />
             <AppleLogin />
           </div>
